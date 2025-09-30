@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <script src="experiment.js"></script>
+    <link rel="stylesheet" href="experiment.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <title>02464 - Miniproject 1</title>
+</head>
+<body>
+    <main class="container">
+        <h1>02464 - Miniproject 1 (Group 36)</h1>
+        <form id="setup-form" onsubmit="event.preventDefault(); startExperiment(event);">
+            <fieldset>
+                <legend>Student ID</legend>
+                <input type="text" name="studentId" placeholder="e.g. s250123" aria-label="e.g. s250123" required pattern="s[0-9]{6}" value="s250200">
+            </fieldset>
+            <fieldset>
+                <legend>Type of recall</legend>
+                <label>
+                    <input type="radio" name="recallType" value="free" required checked />
+                    Free
+                </label>
+                <label>
+                    <input type="radio" name="recallType" value="serial" required />
+                    Serial
+                </label>
+            </fieldset>
+            <fieldset>
+                <legend>Modifiers</legend>
+                <label>
+                    <input type="checkbox" name="delay" value="true" />
+                    Delay
+                </label>
+                <label>
+                    <input type="checkbox" name="rate" value="true" />
+                    Rate
+                </label>
+                <label>
+                    <input type="checkbox" name="Task" value="true" />
+                    Task
+                </label>
+            </fieldset>
+            <button type="submit" id="start-button">Start Experiment</button>
+        </form>
+
+        <div id="experiment-container">
+            <!-- Card will be injected here -->
+        </div>
+    </main>
+</body>
+</html>

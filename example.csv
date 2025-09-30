@@ -1,0 +1,4 @@
+sample,guess,delay,rate,task
+5,4,true,true,false
+9,9,true,true,false
+8,null,true,true,false
