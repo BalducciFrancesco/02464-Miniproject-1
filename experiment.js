@@ -54,6 +54,7 @@ function showSamples() {
 
         let i = 0;
         samples = generateSamples();
+        // Show each sample for 500ms
         const interval = setInterval(() => {
             if (i < samples.length) {
                 showSample(samples[i], i + 1, samples.length);
@@ -67,46 +68,33 @@ function showSamples() {
 }
 
 function showGuesses() {
-    return new Promise(resolve => {
-        async function showGuess(character, idx, total) {
-            experimentContainer.innerHTML = guessFragment;
-        }
-
-        let i = 0;
-        guesses = [];
-        const interval = setInterval(() => {
-            if (i < guesses.length) {
-                showGuess(guesses[i], i + 1, guesses.length);
-                i++;
-            } else {
-                clearInterval(interval);
-                resolve();
-            }
-        }, 500);
-    });
+    guesses = [];
+    experimentContainer.innerHTML = guessFragment;
 }
 
-// --------
-// --------
-// --------
+function handleGuess(event) {
+    if (event.key != 'Enter') return;
+    event.preventDefault();
+    const guess = event.target.value.trim().toUpperCase();
+    guesses.push(guess);
+    // Check if more guesses are needed
+    if (guesses.length < samples.length) {
+        event.target.value = '';
+    } else {
+        downloadCSV();
+    }
+}
 
 function downloadCSV() {
-    // Build CSV data from imageScores
-    let csvData = ['Image,Score1,Score2\n'];
-    
-    for (const [image, scores] of Object.entries(guesses)) {
-        const score1 = scores[0] || '';
-        const score2 = scores[1] || '';
-        csvData.push(`${image},${score1},${score2}\n`);
-    }
-    
-    let csvContent = csvData.join('');
-    let blob = new Blob([csvContent], { type: 'text/csv' });
-    let url = window.URL.createObjectURL(blob);
+    let csv = 'sample,guess\n' + samples.map((s, i) => `${s},${guesses[i] || 'null'}`).join('\n');
+    let blob = new Blob([csv], { type: 'text/csv' });
     let a = document.createElement('a');
-    a.href = url;
-    a.download = `${studentId}.csv`;
+    a.href = URL.createObjectURL(blob);
+    let f = `${formData.studentId || 'unknown'}_${formData.recallType || 'unknown'}`;
+    if (formData.delay) f += '_delay';
+    if (formData.rate) f += '_rate';
+    if (formData.task) f += '_task';
+    a.download = f + '.csv';
     a.click();
-    
-    document.body.innerHTML = '<p>Experiment complete! CSV file downloaded.</p>';
+    document.body.innerHTML = '<p>Experiment complete! CSV downloaded.</p>';
 }
