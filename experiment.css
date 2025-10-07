@@ -44,9 +44,30 @@ h1 {
     margin: 20px 0;
 } */
 
+small {
+    color: #9E9E9E;
+    text-align: center;
+}
+
+.guess-card > footer {
+    display: flex;
+    flex-direction: column;
+}
+
 .sample-symbol {
     text-align: center;
     font-size: 8rem;
     font-weight: bold;
     margin: 40px 0;
+}
+
+.guess-card > input {
+    width: 100% !important;
+    height: 8rem !important;  
+    border: unset !important;
+    background: unset !important;
+    margin-bottom: 0 !important;
+    font-size: 8rem;
+    text-align: center;
+    font-weight: bold;
 }
