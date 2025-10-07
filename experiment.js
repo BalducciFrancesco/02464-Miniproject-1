@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     formContainer = document.getElementById('setup-form');
     sampleFragment = await (await fetch(SAMPLE_FRAGMENT)).text();
     guessFragment = await (await fetch(GUESS_FRAGMENT)).text();
+    // On startup, prefill from single shared key if present
+    const studentInput = formContainer.querySelector('input[name="studentId"]');
+    studentInput.value = localStorage.getItem('lastStudent') || '';
 });
 
 async function startExperiment(e) {
@@ -124,5 +127,6 @@ function downloadCSV(samples, guesses) {
     if (formData.task) f += '_task';
     a.download = f + '.csv';
     a.click();
-    document.body.innerHTML = '<p>Experiment complete! CSV downloaded.</p>';
+    localStorage.setItem('lastStudent', formData.studentId);
+    experimentContainer.innerHTML = '<p>Experiment complete! CSV downloaded. Refresh the page to start a new session.</p>';
 }
