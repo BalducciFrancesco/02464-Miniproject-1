@@ -132,10 +132,10 @@ function downloadCSV(samples, guesses) {
     const blob = new Blob([csv], { type: 'text/csv' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    let f = `${formData.studentId || 'unknown'}_free`;
-    if (formData.delay) f += '_delay';
-    if (formData.rate) f += '_rate';
-    if (formData.task) f += '_task';
+    let f = `${formData.studentId || 'unknown'}_serial`;
+    if (formData['articulatory-suppression']) f += '_articulatory-suppression';
+    if (formData['tapping']) f += '_tapping';
+    if (formData['chunk']) f += '_chunk';
     a.download = f + '.csv';
     a.click();
     localStorage.setItem('lastStudent', formData.studentId);
