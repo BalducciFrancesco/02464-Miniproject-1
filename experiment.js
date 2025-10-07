@@ -17,6 +17,7 @@ let formData = {};
 const SAMPLE_RATE = 500; 
 const SAMPLE_RATE_MOD = 1000; 
 const SAMPLE_DELAY = 10000;
+const SAMPLE_GAP = 200; // ms blank gap after each sample
 
 document.addEventListener('DOMContentLoaded', async () => {
     experimentContainer = document.getElementById('experiment-container');
@@ -34,7 +35,6 @@ async function startExperiment(e) {
     }
 
     let samples = generateSamples()
-
     formContainer.style.display = 'none';
     await showSamples(samples);
     if(formData.task)
@@ -53,38 +53,29 @@ function generateSamples(amount = SAMPLE_COUNT) {
 }
 
 function showSamples(samples) {
-    return new Promise(resolve => {
-        async function showSample(character, idx, total) {
-            experimentContainer.innerHTML = sampleFragment
-                .replace('{{ number }}', character)
-                .replace('{{ idx }}', idx)
-                .replace('{{ total }}', total);
+    // simple async loop: show sample for visibleDuration, then blank gap
+    const wait = ms => new Promise(res => setTimeout(res, ms));
+    function showSample(character, idx, total) {
+        experimentContainer.innerHTML = sampleFragment
+            .replace('{{ number }}', character)
+            .replace('{{ idx }}', idx)
+            .replace('{{ total }}', total);
+    }
+    return (async () => {
+        for (let i = 0; i < samples.length; i++) {
+            const visibleDuration = formData.rate ? SAMPLE_RATE_MOD : SAMPLE_RATE;
+            showSample(samples[i], i + 1, samples.length);
+            await wait(visibleDuration);
+            showSample('\u00A0', i + 1, samples.length);
+            await wait(SAMPLE_GAP);
         }
-
-        let i = 0;
-        experimentContainer.innerHTML = '<article aria-busy="true"></article>';
-        const interval = setInterval(() => {
-            if (i < samples.length) {
-                showSample(samples[i], i + 1, samples.length);
-                i++;
-            } else {
-                clearInterval(interval);
-                resolve();
-            }
-        }, formData.rate ? SAMPLE_RATE_MOD : SAMPLE_RATE);
-    });
+    })();
 }
 
 function showGuesses(samples, customText) {
     return new Promise(resolve => {
         const guesses = [];
-        const instructionText = customText 
-            ? `${customText} <br/><small>Press Enter to submit each guess</small>`
-            : (formData.recallType === 'serial'
-            ? `Write the characters in the SAME order as they were presented. <br/><small>Press Enter to submit each guess</small>`
-            : `Write the characters in ANY order. <br/><small>Press Enter to submit each guess</small>`);
-        experimentContainer.innerHTML = guessFragment.replace('{{ text }}', instructionText);
-
+        experimentContainer.innerHTML = guessFragment.replace('{{ text }}', customText || 'Write the characters in ANY order');
         experimentContainer.querySelector('input').addEventListener('keydown', (event) => {
             if (event.key !== 'Enter' || event.target.value.trim().length !== 1)
                 return;
@@ -127,7 +118,7 @@ function downloadCSV(samples, guesses) {
     const blob = new Blob([csv], { type: 'text/csv' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    let f = `${formData.studentId || 'unknown'}_${formData.recallType || 'unknown'}`;
+    let f = `${formData.studentId || 'unknown'}_free`;
     if (formData.delay) f += '_delay';
     if (formData.rate) f += '_rate';
     if (formData.task) f += '_task';

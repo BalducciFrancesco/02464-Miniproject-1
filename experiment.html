@@ -7,26 +7,18 @@
     <script src="experiment.js"></script>
     <link rel="stylesheet" href="experiment.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <title>02464 - Miniproject 1</title>
+    <title>02464 - Miniproject 1 (Free recall)</title>
 </head>
 <body>
     <main class="container">
-        <h1>02464 - Miniproject 1 (Group 36)</h1>
+        <h1>02464 - Miniproject 1 (Group 36) - Free recall</h1>
+        <p>In this experiment, you will be shown a sequence of characters one at a time. After the sequence, you will be asked to recall as many characters as you can, in any order. Use the modifiers to change task conditions (delay, rate, extra task) before starting. Press Enter to submit each recalled character during the recall phase.</p>
+        <hr>
+
         <form id="setup-form" onsubmit="event.preventDefault(); startExperiment(event);">
             <fieldset>
                 <legend>Student ID</legend>
                 <input type="text" name="studentId" placeholder="e.g. s250123" aria-label="e.g. s250123" required pattern="s[0-9]{6}" value="s250200">
-            </fieldset>
-            <fieldset>
-                <legend>Type of recall</legend>
-                <label title="Recall as many items as you can in any order.">
-                    <input type="radio" name="recallType" value="free" required checked />
-                    Free
-                </label>
-                <label title="Recall the items in the exact order they were presented.">
-                    <input type="radio" name="recallType" value="serial" required />
-                    Serial
-                </label>
             </fieldset>
             <fieldset>
                 <legend>Modifiers</legend>

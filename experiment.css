@@ -44,9 +44,11 @@ h1 {
     margin: 20px 0;
 } */
 
-small {
+small, :where(input, select, textarea, fieldset, .grid) + small {
     color: #9E9E9E;
     text-align: center;
+    margin: revert !important;
+    text-align: revert !important;
 }
 
 .guess-card > footer {
