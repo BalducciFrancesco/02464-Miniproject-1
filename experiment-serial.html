@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <script src="experiment-serial.js"></script>
+    <link rel="stylesheet" href="experiment.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <title>02464 - Miniproject 1 (Serial recall)</title>
+</head>
+<body>
+    <main class="container">
+        <h1>02464 - Miniproject 1 (Group 36) - Serial recall</h1>
+        <p>In this experiment you will be shown a sequence of characters one at a time. After the sequence, you will be asked to recall the characters in the same order they were presented. Use the modifiers to change task conditions (chunking, articulatory suppression, tapping) before starting. Press Enter to submit each guess during recall.</p>
+        <hr>
+
+        <form id="setup-form" onsubmit="event.preventDefault(); startExperiment(event);">
+            <fieldset>
+                <legend>Student ID</legend>
+                <input type="text" name="studentId" placeholder="e.g. s250123" aria-label="e.g. s250123" required pattern="s[0-9]{6}" value="s250200">
+            </fieldset>
+            <fieldset>
+                <legend>Modifiers</legend>
+                <label>
+                    <input type="checkbox" name="chunk" value="true" aria-label="Add chunking" title="Group items into meaningful units to enhance memory." />
+                    Chunk
+                </label>
+                <label>
+                    <input type="checkbox" name="articulatory-suppression" value="true" aria-label="Add articulatory suppression" title="Repeat a sound during recall to prevent verbal rehearsal." />
+                    Articulatory suppression
+                </label>
+                <label>
+                    <input type="checkbox" name="tapping" value="true" aria-label="Add tapping" title="Perform a rhythmic motor task to interfere with memory encoding." />
+                    Tapping
+                </label>
+            </fieldset>
+            <button type="submit" id="start-button">Start Experiment</button>
+        </form>
+
+        <div id="experiment-container">
+            <!-- Card will be injected here -->
+        </div>
+    </main>
+</body>
+</html>
