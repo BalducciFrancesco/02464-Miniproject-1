@@ -2,7 +2,7 @@
 
 This repo has simple web tools and data for two memory tasks: free recall and serial recall. 
 
-## Deliverable
+## Deliverable
 The project report is the main document: check it out [here](documentation/02464-Miniproject_1-Group_36.pdf).
 
 ## What’s inside
